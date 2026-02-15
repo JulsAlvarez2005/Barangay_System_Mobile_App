@@ -1,7 +1,26 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { 
+  View, 
+  Text, 
+  TextInput, 
+  TouchableOpacity, 
+  StyleSheet, 
+  Image, 
+  KeyboardAvoidingView, 
+  Platform, 
+  ScrollView 
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../App'; 
+
+type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>;
+
+
+interface Props {
+  navigation: LoginScreenNavigationProp;
+}
 
 const COLORS = {
   primaryGreen: '#1B4130', 
@@ -12,7 +31,8 @@ const COLORS = {
   placeholderText: '#C1C1C1',
 };
 
-export default function LoginScreen({ navigation }) {
+
+export default function LoginScreen({ navigation }: Props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -45,7 +65,10 @@ export default function LoginScreen({ navigation }) {
                   style={styles.textInput} 
                   placeholder="johndoe@example.com" 
                   placeholderTextColor={COLORS.placeholderText}
-                  value={email} onChangeText={setEmail}
+                  value={email} 
+                  onChangeText={setEmail}
+                  keyboardType="email-address" 
+                  autoCapitalize="none"        
                 />
               </View>
 
@@ -57,7 +80,8 @@ export default function LoginScreen({ navigation }) {
                   placeholder="*********" 
                   placeholderTextColor={COLORS.placeholderText}
                   secureTextEntry={true}
-                  value={password} onChangeText={setPassword}
+                  value={password} 
+                  onChangeText={setPassword}
                 />
               </View>
 

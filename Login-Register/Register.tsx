@@ -1,7 +1,24 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { 
+  View, 
+  Text, 
+  TextInput, 
+  TouchableOpacity, 
+  StyleSheet, 
+  KeyboardAvoidingView, 
+  Platform, 
+  ScrollView 
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../App'; 
+
+type RegisterScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Register'>;
+
+interface Props {
+  navigation: RegisterScreenNavigationProp;
+}
 
 const COLORS = {
   primaryGreen: '#1B4130', 
@@ -12,10 +29,15 @@ const COLORS = {
   placeholderText: '#C1C1C1',
 };
 
-export default function RegisterScreen({ navigation }) {
+
+export default function RegisterScreen({ navigation }: Props) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const handleRegister = () => {
+    alert('Account Created!');
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -38,29 +60,50 @@ export default function RegisterScreen({ navigation }) {
              <Text style={styles.label}>Full Name</Text>
              <View style={styles.inputWrapper}>
                <Feather name="user" size={20} color={COLORS.placeholderText} style={styles.inputIcon} />
-               <TextInput style={styles.textInput} placeholder="Juan Dela Cruz" placeholderTextColor={COLORS.placeholderText} value={name} onChangeText={setName} />
+               <TextInput 
+                 style={styles.textInput} 
+                 placeholder="Juan Dela Cruz" 
+                 placeholderTextColor={COLORS.placeholderText} 
+                 value={name} 
+                 onChangeText={setName} 
+               />
              </View>
 
              {/* Email */}
              <Text style={styles.label}>Email Address</Text>
              <View style={styles.inputWrapper}>
                <Feather name="mail" size={20} color={COLORS.placeholderText} style={styles.inputIcon} />
-               <TextInput style={styles.textInput} placeholder="juan@gmail.com" placeholderTextColor={COLORS.placeholderText} keyboardType="email-address" value={email} onChangeText={setEmail} />
+               <TextInput 
+                 style={styles.textInput} 
+                 placeholder="juan@gmail.com" 
+                 placeholderTextColor={COLORS.placeholderText} 
+                 keyboardType="email-address" 
+                 autoCapitalize="none" 
+                 value={email} 
+                 onChangeText={setEmail} 
+               />
              </View>
 
              {/* Password */}
              <Text style={styles.label}>Password</Text>
              <View style={styles.inputWrapper}>
                <Feather name="lock" size={20} color={COLORS.placeholderText} style={styles.inputIcon} />
-               <TextInput style={styles.textInput} placeholder="Create a password" placeholderTextColor={COLORS.placeholderText} secureTextEntry={true} value={password} onChangeText={setPassword} />
+               <TextInput 
+                 style={styles.textInput} 
+                 placeholder="Create a password" 
+                 placeholderTextColor={COLORS.placeholderText} 
+                 secureTextEntry={true} 
+                 value={password} 
+                 onChangeText={setPassword} 
+               />
              </View>
 
              {/* Register Button */}
-             <TouchableOpacity style={styles.registerButton} onPress={() => alert('Account Created!')}>
+             <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
                <Text style={styles.buttonText}>Sign Up</Text>
              </TouchableOpacity>
              
-             {/* Back to Login Link */}
+             {/* Balik sa Login Link */}
              <View style={styles.loginLinkContainer}>
                 <Text style={styles.textGray}>Already have an account? </Text>
                 <TouchableOpacity onPress={() => navigation.navigate('Login')}>
