@@ -65,7 +65,7 @@ const ResidentDashboard: React.FC<Props> = ({ navigation }) => {
           </TouchableOpacity>
 
           {/* My Requests Button */}
-          <TouchableOpacity style={styles.myRequestsButton} activeOpacity={0.8}>
+          <TouchableOpacity style={styles.myRequestsButton} onPress={() => navigation.navigate('Appointment')} activeOpacity={0.8}>
             <View style={styles.iconCircleOutline}>
                <Ionicons name="document-text-outline" size={24} color="#333" />
             </View>
@@ -90,7 +90,7 @@ const ResidentDashboard: React.FC<Props> = ({ navigation }) => {
         {/* Recent Announcements */}
         <View style={styles.sectionHeaderRow}>
           <Text style={styles.sectionTitle}>Recent Announcements</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Appointment')}>
             <Text style={styles.viewAllText}>View All</Text>
           </TouchableOpacity>
         </View>
@@ -121,9 +121,15 @@ const ResidentDashboard: React.FC<Props> = ({ navigation }) => {
             onPress={() => navigation.navigate('Booking')}
         />
         
-        <NavIcon name="document-text-outline" label="Appointments" />
-        <NavIcon name="newspaper-outline" label="News" />
-        <NavIcon name="person-outline" label="Profile" />
+        <NavIcon name="document-text-outline" label="Appointments" 
+         onPress={() => navigation.navigate('Appointment')} />
+
+        <NavIcon name="newspaper-outline" label="News" 
+         onPress={() => navigation.navigate('Newscreen')} />
+         
+        <NavIcon name="person-outline" label="Profile" 
+         onPress={() => navigation.navigate('Profile')} />
+         
       </View>
 
     </SafeAreaView>

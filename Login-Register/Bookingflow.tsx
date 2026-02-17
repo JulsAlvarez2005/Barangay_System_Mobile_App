@@ -5,12 +5,27 @@ import {
   Platform, UIManager, TextInput
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { User } from 'lucide-react-native/icons';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
 const { width } = Dimensions.get('window');
+
+interface NavIconProps {
+  name: string;
+  label: string;
+  active?: boolean;
+  onPress?: () => void;
+}
+
+const NavIcon: React.FC<NavIconProps> = ({ name, label, active, onPress }) => (
+  <TouchableOpacity style={styles.navItem} onPress={onPress}>
+    <Ionicons name={name as any} size={24} color={active ? '#0F3C2F' : '#999'} />
+    <Text style={[styles.navLabel, active && styles.navLabelActive]}>{label}</Text>
+  </TouchableOpacity>
+);
 
 export default function BookingFlow({ navigation }: any) {
   const [currentStep, setCurrentStep] = useState(1);
@@ -379,7 +394,7 @@ export default function BookingFlow({ navigation }: any) {
         style={styles.actionButtonPrimary} 
         onPress={() => {
           setShowSuccess(false);
-          navigation.navigate('Home');
+          navigation.navigate('Appointment');
         }}
       >
         <Text style={styles.actionButtonPrimaryText}>View my Appointments</Text>
@@ -388,6 +403,40 @@ export default function BookingFlow({ navigation }: any) {
     </View>
   </View>
 </Modal>
+
+{/* BOTTOM NAVIGATION */}
+      <View style={styles.bottomNav}>
+        <NavIcon 
+            name="home" 
+            label="Home" 
+            onPress={() => navigation.navigate('Home')} 
+        />
+        
+        {/* Active Tab */}
+        <NavIcon 
+            name="add-circle-outline" 
+            label="Book" 
+            active 
+        />
+        
+        <NavIcon 
+            name="document-text-outline" 
+            label="Appointments" 
+            onPress={() => navigation.navigate('Appointment')} 
+        />
+
+        <NavIcon 
+            name="newspaper-outline" 
+            label="News" 
+            onPress={() => navigation.navigate('Newscreen')} 
+        />
+         
+        <NavIcon 
+            name="person-outline" 
+            label="Profile" 
+            onPress={() => navigation.navigate('Profile')} 
+        />
+      </View>
 
     </SafeAreaView>
   );
@@ -904,5 +953,31 @@ const styles = StyleSheet.create({
     color: '#fff', 
     fontWeight: 'bold', 
     fontSize: 16 
-}
+},
+
+ // Navigation
+  bottomNav: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 12,
+    backgroundColor: '#fff',
+    borderTopWidth: 1,
+    borderTopColor: '#E5E7EB',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+  navItem: {
+    alignItems: 'center',
+  },
+  navLabel: {
+    fontSize: 10,
+    color: '#999',
+    marginTop: 4,
+  },
+  navLabelActive: {
+    color: '#0F3C2F',
+    fontWeight: 'bold',
+  },
 });

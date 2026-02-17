@@ -7,7 +7,8 @@ import {
   StyleSheet, 
   KeyboardAvoidingView, 
   Platform, 
-  ScrollView 
+  ScrollView,
+  Alert
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
@@ -29,22 +30,35 @@ const COLORS = {
   placeholderText: '#C1C1C1',
 };
 
-
 export default function RegisterScreen({ navigation }: Props) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [address, setAddress] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [birthDate, setBirthDate] = useState(''); 
 
   const handleRegister = () => {
-    alert('Account Created!');
+    if (!name || !email || !password || !address || !phoneNumber || !birthDate) {
+      Alert.alert('Missing Fields', 'Please fill in all details to continue.');
+      return;
+    }
+
+    const newUserId = 'user_' + Date.now();
+    console.log("Account Created!");
+    console.log("User ID:", newUserId);
+    console.log("Details:", { name, email, address, phoneNumber, birthDate });
+
+    Alert.alert('Success', `Account Created! \nYour Member ID is: ${newUserId}`, [
+      { text: "OK", onPress: () => navigation.navigate('Login') }
+    ]);
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }} bounces={false}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }} bounces={false} showsVerticalScrollIndicator={false}>
           
-          {/* Header with Back Button */}
           <View style={styles.header}>
             <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
               <Feather name="arrow-left" size={24} color={COLORS.white} />
@@ -66,6 +80,46 @@ export default function RegisterScreen({ navigation }: Props) {
                  placeholderTextColor={COLORS.placeholderText} 
                  value={name} 
                  onChangeText={setName} 
+               />
+             </View>
+
+             {/* Phone Number */}
+             <Text style={styles.label}>Phone Number</Text>
+             <View style={styles.inputWrapper}>
+               <Feather name="phone" size={20} color={COLORS.placeholderText} style={styles.inputIcon} />
+               <TextInput 
+                 style={styles.textInput} 
+                 placeholder="0912 345 6789" 
+                 placeholderTextColor={COLORS.placeholderText} 
+                 keyboardType="phone-pad"
+                 value={phoneNumber} 
+                 onChangeText={setPhoneNumber} 
+               />
+             </View>
+
+             {/* Birthdate */}
+             <Text style={styles.label}>Birth Date</Text>
+             <View style={styles.inputWrapper}>
+               <Feather name="calendar" size={20} color={COLORS.placeholderText} style={styles.inputIcon} />
+               <TextInput 
+                 style={styles.textInput} 
+                 placeholder="MM/DD/YYYY" 
+                 placeholderTextColor={COLORS.placeholderText} 
+                 value={birthDate} 
+                 onChangeText={setBirthDate} 
+               />
+             </View>
+
+             {/* Address */}
+             <Text style={styles.label}>Address (Purok, Barangay)</Text>
+             <View style={styles.inputWrapper}>
+               <Feather name="map-pin" size={20} color={COLORS.placeholderText} style={styles.inputIcon} />
+               <TextInput 
+                 style={styles.textInput} 
+                 placeholder="Purok 5, Bayabas, Toril" 
+                 placeholderTextColor={COLORS.placeholderText} 
+                 value={address} 
+                 onChangeText={setAddress} 
                />
              </View>
 
@@ -103,13 +157,15 @@ export default function RegisterScreen({ navigation }: Props) {
                <Text style={styles.buttonText}>Sign Up</Text>
              </TouchableOpacity>
              
-             {/* Balik sa Login Link */}
+             {/* Login Link */}
              <View style={styles.loginLinkContainer}>
                 <Text style={styles.textGray}>Already have an account? </Text>
                 <TouchableOpacity onPress={() => navigation.navigate('Login')}>
                   <Text style={styles.linkGreen}>Login</Text>
                 </TouchableOpacity>
              </View>
+
+             <View style={{height: 50}} /> 
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
