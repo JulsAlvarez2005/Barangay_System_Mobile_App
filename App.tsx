@@ -3,7 +3,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from './Login-Register/Login'; 
 import ForgotPassword from './Login-Register/Forgetpass';
-import Register from './Login-Register/Register';
 import HomeScreen from './Login-Register/Homescreen';
 import BookingFlow from './Login-Register/Bookingflow';
 import Appointment from './Login-Register/Appointment';
@@ -13,7 +12,6 @@ import Profile from './Login-Register/Profile';
 export type RootStackParamList = {
   Login: undefined;
   ForgotPassword: undefined;
-  Register: undefined;
   Home: undefined;
   Booking: undefined; 
   BookingDate: undefined;
@@ -22,9 +20,7 @@ export type RootStackParamList = {
   Profile: undefined;
 };
 
-
 const Stack = createNativeStackNavigator<RootStackParamList>();
-
 export default function App() {
   return (
     <NavigationContainer>
@@ -35,7 +31,6 @@ export default function App() {
       >
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
-        <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Booking" component={BookingFlow} />
         <Stack.Screen name="Appointment" component={Appointment} />

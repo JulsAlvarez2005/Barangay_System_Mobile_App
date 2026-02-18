@@ -137,7 +137,7 @@ export default function BookingFlow({ navigation }: any) {
         <Text style={styles.dateDetailText}>Date: Thursday, January 29, 2026</Text>
       </View>
 
-      {/* Morning Session Card */}
+      {/* Morning Sess Card */}
       <View style={styles.sessionCard}>
         <View style={styles.sessionHeaderRow}>
             <View style={styles.row}>
@@ -157,7 +157,7 @@ export default function BookingFlow({ navigation }: any) {
         </TouchableOpacity>
       </View>
 
-      {/* Afternoon Session Card */}
+      {/* Afternoon Sess Card */}
       <View style={styles.sessionCard}>
         <View style={styles.sessionHeaderRow}>
             <View style={styles.row}>
@@ -177,7 +177,6 @@ export default function BookingFlow({ navigation }: any) {
         </TouchableOpacity>
       </View>
 
-      {/* Footer Next Button */}
       <TouchableOpacity 
         style={[styles.primaryButton, !selectedSession && {opacity: 0.5}]} 
         disabled={!selectedSession}
@@ -257,7 +256,6 @@ export default function BookingFlow({ navigation }: any) {
         </View>
       </View>
 
-      {/* Final Button */}
       <TouchableOpacity 
         style={[styles.primaryButton, purpose.length < 10 && {opacity: 0.6}]} 
         onPress={() => nextStep(5)}
@@ -365,46 +363,46 @@ export default function BookingFlow({ navigation }: any) {
         {currentStep === 5 && renderStep5()}
       </ScrollView>
 
-      {/* BOTTOM SHEET! */}
+       {/* BOTTOM SHEET! requested ni JM */}
        <Modal
-        animationType="slide"
-        transparent={true}
-        visible={showSuccess}
-        onRequestClose={() => setShowSuccess(false)}>
+          animationType="slide"
+          transparent={true}
+          visible={showSuccess}
+          onRequestClose={() => setShowSuccess(false)}>
         
-        <View style={styles.bottomSheetOverlay}>
-        <View style={styles.bottomSheetContainer}>
+          <View style={styles.bottomSheetOverlay}>
+          <View style={styles.bottomSheetContainer}>
 
-      {/* Decorative Handle Bar */}
-      <View style={styles.dragHandle} />
+         {/* Decorative Handle Bar */}
+          <View style={styles.dragHandle} />
 
-      {/* Success Icon */}
-      <View style={styles.successCircleLarge}>
-        <Ionicons name="checkmark" size={50} color="#0F3C2F" />
+         {/* Success Icon */}
+          <View style={styles.successCircleLarge}>
+             <Ionicons name="checkmark" size={50} color="#0F3C2F" />
+          </View>
+
+          <Text style={styles.bottomSheetTitle}>Appointment Submitted!</Text>
+          <Text style={styles.bottomSheetSubtitle}>
+             Your appointment request has been submitted successfully. 
+             You will receive a notification once it is reviewed by the barangay staff.
+          </Text>
+
+          {/* Action Buttons */}
+          <TouchableOpacity 
+            style={styles.actionButtonPrimary} 
+            onPress={() => {
+            setShowSuccess(false);
+           navigation.navigate('Appointment');
+           }}
+        >
+            <Text style={styles.actionButtonPrimaryText}>View my Appointments</Text>
+          </TouchableOpacity>
+
+        </View>
       </View>
+    </Modal>
 
-      <Text style={styles.bottomSheetTitle}>Appointment Submitted!</Text>
-      <Text style={styles.bottomSheetSubtitle}>
-        Your appointment request has been submitted successfully. 
-        You will receive a notification once it is reviewed by the barangay staff.
-      </Text>
-
-      {/* Action Buttons */}
-      <TouchableOpacity 
-        style={styles.actionButtonPrimary} 
-        onPress={() => {
-          setShowSuccess(false);
-          navigation.navigate('Appointment');
-        }}
-      >
-        <Text style={styles.actionButtonPrimaryText}>View my Appointments</Text>
-      </TouchableOpacity>
-
-    </View>
-  </View>
-</Modal>
-
-{/* BOTTOM NAVIGATION */}
+      {/* BOTTOM NAVIGATION */}
       <View style={styles.bottomNav}>
         <NavIcon 
             name="home" 
@@ -412,7 +410,6 @@ export default function BookingFlow({ navigation }: any) {
             onPress={() => navigation.navigate('Home')} 
         />
         
-        {/* Active Tab */}
         <NavIcon 
             name="add-circle-outline" 
             label="Book" 
@@ -444,7 +441,6 @@ export default function BookingFlow({ navigation }: any) {
 
 
 const styles = StyleSheet.create({
-  // BASE LAYOUT 
   container: { 
     flex: 1, 
     backgroundColor: '#fff' 

@@ -43,7 +43,6 @@ const InfoRow = ({ label, value, isBold = false }: { label: string, value: strin
   </View>
 );
 
-// MAIN COMPONENT
 export default function ProfileScreen({ navigation }: Props) {
   
   const handleLogout = () => {
@@ -55,14 +54,13 @@ export default function ProfileScreen({ navigation }: Props) {
     <View style={styles.mainContainer}>
       <StatusBar barStyle="light-content" backgroundColor="#0F3C32" />
 
-      {/* GREEN HEADER SECTION */}
       <View style={styles.headerSection}>
         <View style={styles.topBar}>
         </View>
         
         
         <View style={styles.profileHeaderContent}>
-          {/* Avatar Icon */}
+         {/*Avatar*/}
           <View style={styles.avatarContainer}>
              <Ionicons name="person-circle-outline" size={80} color="#FFFFFF" />
           </View>
@@ -72,10 +70,8 @@ export default function ProfileScreen({ navigation }: Props) {
         </View>
       </View>
 
-      {/* BODY CONTENT  */}
       <View style={styles.bodyContainer}>
-        
-        {/* Info Card */}
+    
         <View style={styles.card}>
           <InfoRow label="Address" value="Purok 5, Bayabas" isBold />
           <InfoRow label="Phone Number" value="+63 912 345 6789" isBold />
@@ -165,7 +161,6 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
 
-  // BODY STYLES
   bodyContainer: {
     paddingHorizontal: 20,
     marginTop: 20,

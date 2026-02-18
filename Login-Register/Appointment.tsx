@@ -34,20 +34,19 @@ interface NavIconProps {
   onPress?: () => void; 
 }
 
-// --- Types ---
 interface Appointment {
   id: string;
   serviceName: string;
   referenceNumber: string;
-  date: string;       // Short date for card
-  fullDate: string;   // Full date for details
+  date: string;      
+  fullDate: string;   
   timeRange: string;
   status: 'Pending' | 'Completed' | 'Cancelled';
-  purpose: string;    // New field
-  bookedDate: string; // New field
+  purpose: string;    
+  bookedDate: string; 
 }
 
-// --- Mock Data ---
+// Mock Data 
 const APPOINTMENTS_DATA: Appointment[] = [
   {
     id: '1',
@@ -73,7 +72,7 @@ const APPOINTMENTS_DATA: Appointment[] = [
   },
 ];
 
-// --- Sub-Component: Appointment Details Modal ---
+// Sub-Component: Appointment Details Modal
 const AppointmentDetailsModal = ({ 
   visible, 
   appointment, 
@@ -93,14 +92,12 @@ const AppointmentDetailsModal = ({
       onRequestClose={onClose}
     >
       <View style={styles.modalOverlay}>
-        {/* Transparent touch area to close modal when clicking outside */}
         <TouchableWithoutFeedback onPress={onClose}>
           <View style={styles.modalBackdrop} />
         </TouchableWithoutFeedback>
 
         {/* Bottom Sheet Content */}
         <View style={styles.modalContent}>
-          {/* Drag Handle */}
           <View style={styles.dragHandleContainer}>
             <View style={styles.dragHandle} />
           </View>
@@ -108,31 +105,31 @@ const AppointmentDetailsModal = ({
           <Text style={styles.modalTitle}>Appointment Details</Text>
 
           <ScrollView showsVerticalScrollIndicator={false}>
-            {/* Detail Item: Service */}
+            {/* Service */}
             <View style={styles.detailItem}>
               <Text style={styles.detailLabel}>Service</Text>
               <Text style={styles.detailValue}>{appointment.serviceName}</Text>
             </View>
 
-            {/* Detail Item: Date */}
+            {/* Date */}
             <View style={styles.detailItem}>
               <Text style={styles.detailLabel}>Date</Text>
               <Text style={styles.detailValue}>{appointment.fullDate}</Text>
             </View>
 
-            {/* Detail Item: Time Slot */}
+            {/* Time Slot CARDS */}
             <View style={styles.detailItem}>
               <Text style={styles.detailLabel}>Time Slot</Text>
               <Text style={styles.detailValue}>{appointment.timeRange}</Text>
             </View>
 
-            {/* Detail Item: Purpose */}
+            {/* Purpose */}
             <View style={styles.detailItem}>
               <Text style={styles.detailLabel}>Purpose</Text>
               <Text style={styles.detailValue}>{appointment.purpose}</Text>
             </View>
 
-            {/* Detail Item: Status */}
+            {/* Status */}
             <View style={styles.detailItem}>
               <Text style={styles.detailLabel}>Status</Text>
               <Text style={[styles.detailValue, { color: '#EAB308' }]}>
@@ -140,14 +137,13 @@ const AppointmentDetailsModal = ({
               </Text>
             </View>
 
-            {/* Detail Item: Booked Date */}
+            {/* Booked Date */}
             <View style={styles.detailItem}>
               <Text style={styles.detailLabel}>Booked Date</Text>
               <Text style={styles.detailValue}>{appointment.bookedDate}</Text>
             </View>
           </ScrollView>
 
-          {/* Action Buttons */}
           <View style={styles.modalButtonsContainer}>
             <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
               <Text style={styles.cancelButtonText}>Cancel Appointment</Text>
@@ -165,7 +161,7 @@ const AppointmentDetailsModal = ({
 };
 
 
-// --- Sub-Component: Appointment Card ---
+// Sub-Component: Appointment Card 
 const AppointmentCard = ({ 
   item, 
   onPress 
@@ -203,7 +199,7 @@ const AppointmentCard = ({
   );
 };
 
-// --- Sub-Component: Bottom Tab Item ---
+// Sub-Component: Bottom Tab Item
 const BottomTabItem = ({ 
   icon: Icon, 
   label, 
@@ -225,7 +221,6 @@ const BottomTabItem = ({
   </TouchableOpacity>
 );
 
-// --- Main Screen Component ---
 export default function AppointmentScreen ({ navigation }: Props) {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
@@ -243,14 +238,11 @@ export default function AppointmentScreen ({ navigation }: Props) {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#0F3C32" />
-      
-      {/* Top Header Section */}
       <View style={styles.headerContainer}>
         <Text style={styles.headerTitle}>My Appointments</Text>
         <Text style={styles.headerSubtitle}>Track your service requests</Text>
       </View>
 
-      {/* Main Content List */}
       <FlatList
         data={APPOINTMENTS_DATA}
         keyExtractor={(item) => item.id}
@@ -275,7 +267,6 @@ export default function AppointmentScreen ({ navigation }: Props) {
             onPress={() => navigation.navigate('Booking')}
         />
         
-        {/* Active Tab */}
         <NavIcon 
             name="document-text-outline" 
             label="Appointments" 
@@ -295,7 +286,6 @@ export default function AppointmentScreen ({ navigation }: Props) {
         />
       </View>
 
-      {/* Details Modal */}
       <AppointmentDetailsModal 
         visible={modalVisible}
         appointment={selectedAppointment}
@@ -312,7 +302,6 @@ const NavIcon: React.FC<NavIconProps> = ({ name, label, active = false, onPress 
   </TouchableOpacity>
 );
 
-// --- Styles ---
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -339,7 +328,6 @@ const styles = StyleSheet.create({
     paddingBottom: 100,
   },
   
-  // Card Styles
   card: {
     backgroundColor: '#FFFFFF',
     borderRadius: 12,
@@ -401,7 +389,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
 
-  // Bottom Navigation Styles
+  // Navigation
   bottomNavContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -444,7 +432,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 24,
     padding: 24,
     paddingBottom: 40,
-    maxHeight: '80%', // Ensures it doesn't take full screen
+    maxHeight: '80%', 
   },
   dragHandleContainer: {
     alignItems: 'center',
@@ -467,12 +455,12 @@ const styles = StyleSheet.create({
   },
   detailLabel: {
     fontSize: 12,
-    color: '#9CA3AF', // Gray label
+    color: '#9CA3AF', 
     marginBottom: 4,
   },
   detailValue: {
     fontSize: 14,
-    color: '#1F2937', // Darker text for value
+    color: '#1F2937',
     fontWeight: '500',
   },
   modalButtonsContainer: {
@@ -484,20 +472,20 @@ const styles = StyleSheet.create({
   cancelButton: {
     flex: 1,
     borderWidth: 1,
-    borderColor: '#EF4444', // Red border
+    borderColor: '#EF4444',
     borderRadius: 8,
     paddingVertical: 12,
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
   },
   cancelButtonText: {
-    color: '#EF4444', // Red text
+    color: '#EF4444', 
     fontWeight: '600',
     fontSize: 14,
   },
   closeButton: {
     flex: 1,
-    backgroundColor: '#0F3C32', // Dark Green
+    backgroundColor: '#0F3C32', 
     borderRadius: 8,
     paddingVertical: 12,
     alignItems: 'center',

@@ -45,7 +45,6 @@ export default function LoginScreen({ navigation }: Props) {
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} bounces={false}>
           
-          {/* TOP SECTION */}
           <View style={styles.topSection}>
             <View style={styles.logoContainer}>
               <Image source={require('../assets/logo.png')} style={styles.logo} resizeMode="contain" />
@@ -53,7 +52,6 @@ export default function LoginScreen({ navigation }: Props) {
             <Text style={styles.appTitle}>Barangay Appointment System</Text>
           </View>
 
-          {/* BOTTOM SECTION */}
           <View style={styles.bottomSection}>
             <View style={styles.dragHandleCenter}><View style={styles.dragHandle} /></View>
             
@@ -92,13 +90,6 @@ export default function LoginScreen({ navigation }: Props) {
               <TouchableOpacity style={styles.signInButton} onPress={handleLogin}>
                 <Text style={styles.signInButtonText}>Sign In</Text>
               </TouchableOpacity>
-
-              <View style={styles.registerContainer}>
-                <Text style={styles.registerText}>Don’t have an account? </Text>
-                <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-                  <Text style={styles.registerLinkBold}>Register here</Text>
-                </TouchableOpacity>
-              </View>
             </View>
           </View>
         </ScrollView>

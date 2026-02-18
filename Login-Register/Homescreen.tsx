@@ -27,8 +27,7 @@ const ResidentDashboard: React.FC<Props> = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#0F3C2F" />
-      
-      {/* HEADER SECTION */}
+  
       <View style={styles.header}>
         <View style={styles.profileContainer}>
           <View style={styles.avatarPlaceholder}>
@@ -41,14 +40,12 @@ const ResidentDashboard: React.FC<Props> = ({ navigation }) => {
         </View>
       </View>
 
-      {/* MAIN SCROLL CONTENT */}
       <ScrollView 
         style={styles.contentContainer} 
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 100 }} 
       >
         
-        {/* Quick Actions */}
         <Text style={styles.sectionTitle}>Quick Actions</Text>
         <View style={styles.actionRow}>
             
@@ -113,8 +110,6 @@ const ResidentDashboard: React.FC<Props> = ({ navigation }) => {
       {/* BOTTOM NAVIGATION */}
       <View style={styles.bottomNav}>
         <NavIcon name="home" label="Home" active />
-        
-        {/* Bottom tab  */}
         <NavIcon 
             name="add-circle-outline" 
             label="Book" 
@@ -151,8 +146,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5F5F5',
   },
-  
-  // Header
+ 
   header: {
     backgroundColor: '#0F3C2F',
     paddingTop: 40, 
@@ -187,7 +181,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
 
-  // Content
   contentContainer: {
     flex: 1,
     paddingHorizontal: 20,
@@ -212,7 +205,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
 
-  // Actions
   actionRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -268,7 +260,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 
-  // Cards
   card: {
     backgroundColor: '#fff',
     borderRadius: 12,

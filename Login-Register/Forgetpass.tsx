@@ -13,7 +13,6 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-// Adjust the import path for RootStackParamList based on your folder structure
 import { RootStackParamList } from '../App'; 
 
 type ForgotPasswordNavigationProp = NativeStackNavigationProp<RootStackParamList, 'ForgotPassword'>;
@@ -39,7 +38,7 @@ export default function ForgotPasswordScreen({ navigation }: Props) {
       Alert.alert('Error', 'Please enter your email or phone number.');
       return;
     }
-    // In a real app, you would send this to your backend
+  
     Alert.alert(
       'Request Sent', 
       `If an account exists for ${contactInfo}, you will receive a reset link/code shortly.`,
@@ -52,7 +51,6 @@ export default function ForgotPasswordScreen({ navigation }: Props) {
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} bounces={false}>
           
-          {/* Header */}
           <View style={styles.header}>
             <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
               <Feather name="arrow-left" size={24} color={COLORS.white} />
@@ -60,7 +58,6 @@ export default function ForgotPasswordScreen({ navigation }: Props) {
             <Text style={styles.headerTitle}>Reset Password</Text>
           </View>
 
-          {/* Bottom Section */}
           <View style={styles.bottomSection}>
             <View style={styles.dragHandleCenter}><View style={styles.dragHandle} /></View>
             
@@ -70,7 +67,6 @@ export default function ForgotPasswordScreen({ navigation }: Props) {
                 Enter your email address or phone number to retrieve your password.
               </Text>
 
-              {/* Input Field */}
               <Text style={styles.label}>Email or Phone Number</Text>
               <View style={styles.inputWrapper}>
                 <Feather name="at-sign" size={20} color={COLORS.placeholderText} style={styles.inputIcon} />
@@ -84,7 +80,6 @@ export default function ForgotPasswordScreen({ navigation }: Props) {
                 />
               </View>
 
-              {/* Send Button */}
               <TouchableOpacity style={styles.sendButton} onPress={handleResetPassword}>
                 <Text style={styles.sendButtonText}>Send Reset Link</Text>
               </TouchableOpacity>

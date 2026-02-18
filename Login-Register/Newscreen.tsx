@@ -95,23 +95,16 @@ const NewsDetailsModal = ({
           </View>
 
           <ScrollView showsVerticalScrollIndicator={false}>
-            {/* Title */}
             <Text style={styles.modalTitle}>{newsItem.title}</Text>
-
-            {/* Date */}
             <View style={styles.modalDateRow}>
               <Calendar size={16} color="#6B7280" />
               <Text style={styles.modalDateText}>{newsItem.formattedDate}</Text>
             </View>
 
-            {/* Divider */}
             <View style={styles.divider} />
-
-            {/* Full Content */}
             <Text style={styles.modalBodyText}>{newsItem.fullContent}</Text>
           </ScrollView>
-
-          {/* Close Button */}
+          
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
             <Text style={styles.closeButtonText}>Close Article</Text>
           </TouchableOpacity>
