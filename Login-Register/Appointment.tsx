@@ -8,18 +8,13 @@ import {
   TouchableOpacity,
   StatusBar,
   Modal,
-  Dimensions,
   TouchableWithoutFeedback,
-  ScrollView
+  ScrollView,
+  Alert
 } from 'react-native';
 import {
   Calendar,
   Clock,
-  Home,
-  PlusCircle,
-  FileText,
-  Newspaper,
-  User,
 } from 'lucide-react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
@@ -41,12 +36,12 @@ interface Appointment {
   date: string;      
   fullDate: string;   
   timeRange: string;
-  status: 'Pending' | 'Completed' | 'Cancelled';
+  status: 'Pending' | 'Complete' | 'Cancelled'; // STATUS OPTIONS
   purpose: string;    
   bookedDate: string; 
 }
 
-// Mock Data 
+// Sample only
 const APPOINTMENTS_DATA: Appointment[] = [
   {
     id: '1',
@@ -63,16 +58,15 @@ const APPOINTMENTS_DATA: Appointment[] = [
     id: '2',
     serviceName: 'Barangay Certificate',
     referenceNumber: 'BC-2026-002',
-    date: 'Feb 14, 2026',
-    fullDate: 'Friday, February 14, 2026',
+    date: 'Feb 12, 2026',
+    fullDate: 'Friday, February 12, 2026',
     timeRange: '8:00 AM - 11:00 AM',
-    status: 'Pending',
+    status: 'Complete',
     purpose: 'School Requirement',
     bookedDate: '2/10/2026'
   },
 ];
 
-// Sub-Component: Appointment Details Modal
 const AppointmentDetailsModal = ({ 
   visible, 
   appointment, 
@@ -96,7 +90,6 @@ const AppointmentDetailsModal = ({
           <View style={styles.modalBackdrop} />
         </TouchableWithoutFeedback>
 
-        {/* Bottom Sheet Content */}
         <View style={styles.modalContent}>
           <View style={styles.dragHandleContainer}>
             <View style={styles.dragHandle} />
@@ -105,39 +98,36 @@ const AppointmentDetailsModal = ({
           <Text style={styles.modalTitle}>Appointment Details</Text>
 
           <ScrollView showsVerticalScrollIndicator={false}>
-            {/* Service */}
             <View style={styles.detailItem}>
               <Text style={styles.detailLabel}>Service</Text>
               <Text style={styles.detailValue}>{appointment.serviceName}</Text>
             </View>
 
-            {/* Date */}
             <View style={styles.detailItem}>
               <Text style={styles.detailLabel}>Date</Text>
               <Text style={styles.detailValue}>{appointment.fullDate}</Text>
             </View>
 
-            {/* Time Slot CARDS */}
             <View style={styles.detailItem}>
               <Text style={styles.detailLabel}>Time Slot</Text>
               <Text style={styles.detailValue}>{appointment.timeRange}</Text>
             </View>
 
-            {/* Purpose */}
             <View style={styles.detailItem}>
               <Text style={styles.detailLabel}>Purpose</Text>
               <Text style={styles.detailValue}>{appointment.purpose}</Text>
             </View>
 
-            {/* Status */}
             <View style={styles.detailItem}>
               <Text style={styles.detailLabel}>Status</Text>
-              <Text style={[styles.detailValue, { color: '#EAB308' }]}>
+              <Text style={[
+                styles.detailValue, 
+                { color: appointment.status === 'Complete' ? '#2563EB' : '#EAB308' }
+              ]}>
                 {appointment.status}
               </Text>
             </View>
 
-            {/* Booked Date */}
             <View style={styles.detailItem}>
               <Text style={styles.detailLabel}>Booked Date</Text>
               <Text style={styles.detailValue}>{appointment.bookedDate}</Text>
@@ -145,35 +135,49 @@ const AppointmentDetailsModal = ({
           </ScrollView>
 
           <View style={styles.modalButtonsContainer}>
-            <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
-              <Text style={styles.cancelButtonText}>Cancel Appointment</Text>
-            </TouchableOpacity>
+            {appointment.status === 'Pending' && (
+              <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
+                <Text style={styles.cancelButtonText}>Cancel Appointment</Text>
+              </TouchableOpacity>
+            )}
             
             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
               <Text style={styles.closeButtonText}>Close</Text>
             </TouchableOpacity>
           </View>
         </View>
-        
       </View>
     </Modal>
   );
 };
 
 
-// Sub-Component: Appointment Card 
 const AppointmentCard = ({ 
   item, 
-  onPress 
+  onPress,
+  onRateUs
 }: { 
   item: Appointment, 
-  onPress: (item: Appointment) => void 
+  onPress: (item: Appointment) => void,
+  onRateUs: (item: Appointment) => void
 }) => {
+
+  const getStatusColor = (status: string) => {
+    switch(status) {
+      case 'Complete': return '#2563EB'; 
+      case 'Pending': return '#EAB308';  
+      // basi need pa ug color green for approved, if naa
+      default: return '#6B7280';
+    }
+  };
+
   return (
     <View style={styles.card}>
       <View style={styles.cardHeader}>
         <Text style={styles.serviceName}>{item.serviceName}</Text>
-        <Text style={styles.statusText}>{item.status}</Text>
+        <Text style={[styles.statusText, { color: getStatusColor(item.status) }]}>
+          {item.status}
+        </Text>
       </View>
 
       <Text style={styles.referenceText}>Ref: {item.referenceNumber}</Text>
@@ -195,29 +199,23 @@ const AppointmentCard = ({
       >
         <Text style={styles.viewDetailsText}>View Details</Text>
       </TouchableOpacity>
+
+      {item.status === 'Complete' && (
+        <View style={styles.rateUsContainer}>
+          <TouchableOpacity style={styles.rateUsButton} onPress={() => onRateUs(item)}>
+            <Text style={styles.rateUsText}>Rate Us</Text>
+            <Ionicons name="star-outline" size={14} color="#FFFFFF" style={styles.starIcon} />
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };
 
-// Sub-Component: Bottom Tab Item
-const BottomTabItem = ({ 
-  icon: Icon, 
-  label, 
-  isActive = false 
-}: { 
-  icon: any, 
-  label: string, 
-  isActive?: boolean 
-}) => (
-  <TouchableOpacity style={styles.tabItem}>
-    <Icon 
-      size={24} 
-      color={isActive ? '#0F3C32' : '#9CA3AF'} 
-      strokeWidth={isActive ? 2.5 : 2}
-    />
-    <Text style={[styles.tabLabel, isActive && styles.tabLabelActive]}>
-      {label}
-    </Text>
+const NavIcon: React.FC<NavIconProps> = ({ name, label, active = false, onPress }) => (
+  <TouchableOpacity style={styles.navItem} activeOpacity={0.7} onPress={onPress}>
+    <Ionicons name={name} size={24} color={active ? "#0F3C2F" : "#999"} />
+    <Text style={[styles.navLabel, active && styles.navLabelActive]}>{label}</Text>
   </TouchableOpacity>
 );
 
@@ -235,6 +233,11 @@ export default function AppointmentScreen ({ navigation }: Props) {
     setSelectedAppointment(null);
   };
 
+  // Rate Us button
+  const handleRateUs = (item: Appointment) => {
+    navigation.navigate('RateUs'); 
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#0F3C32" />
@@ -247,43 +250,22 @@ export default function AppointmentScreen ({ navigation }: Props) {
         data={APPOINTMENTS_DATA}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <AppointmentCard item={item} onPress={handleViewDetails} />
+          <AppointmentCard 
+            item={item} 
+            onPress={handleViewDetails} 
+            onRateUs={handleRateUs}
+          />
         )}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
       />
 
-      {/* BOTTOM NAVIGATION */}
       <View style={styles.bottomNav}>
-        <NavIcon 
-            name="home" 
-            label="Home" 
-            onPress={() => navigation.navigate('Home')} 
-        />
-        
-        <NavIcon 
-            name="add-circle-outline" 
-            label="Book" 
-            onPress={() => navigation.navigate('Booking')}
-        />
-        
-        <NavIcon 
-            name="document-text-outline" 
-            label="Appointments" 
-            active 
-        />
-
-        <NavIcon 
-            name="newspaper-outline" 
-            label="News" 
-            onPress={() => navigation.navigate('Newscreen')} 
-        />
-         
-        <NavIcon 
-            name="person-outline" 
-            label="Profile" 
-            onPress={() => navigation.navigate('Profile')} 
-        />
+        <NavIcon name="home" label="Home" onPress={() => navigation.navigate('Home')} />
+        <NavIcon name="add-circle-outline" label="Book" onPress={() => navigation.navigate('Booking')} />
+        <NavIcon name="document-text-outline" label="Appointments" active />
+        <NavIcon name="newspaper-outline" label="News" onPress={() => navigation.navigate('Newscreen')} />
+        <NavIcon name="person-outline" label="Profile" onPress={() => navigation.navigate('Profile')} />
       </View>
 
       <AppointmentDetailsModal 
@@ -294,13 +276,6 @@ export default function AppointmentScreen ({ navigation }: Props) {
     </SafeAreaView>
   );
 }
-
-const NavIcon: React.FC<NavIconProps> = ({ name, label, active = false, onPress }) => (
-  <TouchableOpacity style={styles.navItem} activeOpacity={0.7} onPress={onPress}>
-    <Ionicons name={name} size={24} color={active ? "#0F3C2F" : "#999"} />
-    <Text style={[styles.navLabel, active && styles.navLabelActive]}>{label}</Text>
-  </TouchableOpacity>
-);
 
 const styles = StyleSheet.create({
   container: {
@@ -325,9 +300,9 @@ const styles = StyleSheet.create({
   },
   listContent: {
     padding: 16,
-    paddingBottom: 100,
+    paddingBottom: 100, 
   },
-  
+
   card: {
     backgroundColor: '#FFFFFF',
     borderRadius: 12,
@@ -355,7 +330,6 @@ const styles = StyleSheet.create({
   statusText: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#EAB308',
   },
   referenceText: {
     fontSize: 12,
@@ -388,14 +362,31 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 14,
   },
-
-  // Navigation
-  bottomNavContainer: {
+  rateUsContainer: {
+    alignItems: 'flex-end', 
+    marginTop: 12,
+  },
+  rateUsButton: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    backgroundColor: '#FFFFFF',
-    paddingVertical: 12,
+    alignItems: 'center',
+    backgroundColor: '#0F3C32', 
+    paddingVertical: 8,
     paddingHorizontal: 16,
+    borderRadius: 6,
+  },
+  rateUsText: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  starIcon: {
+    marginLeft: 6,
+  },
+  bottomNav: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 12,
+    backgroundColor: '#fff',
     borderTopWidth: 1,
     borderTopColor: '#E5E7EB',
     position: 'absolute',
@@ -403,21 +394,18 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
   },
-  tabItem: {
+  navItem: {
     alignItems: 'center',
-    justifyContent: 'center',
   },
-  tabLabel: {
+  navLabel: {
     fontSize: 10,
+    color: '#999',
     marginTop: 4,
-    color: '#9CA3AF',
   },
-  tabLabelActive: {
-    color: '#0F3C32',
-    fontWeight: '600',
+  navLabelActive: {
+    color: '#0F3C2F',
+    fontWeight: 'bold',
   },
-
-  // Modal Styles
   modalOverlay: {
     flex: 1,
     justifyContent: 'flex-end',
@@ -494,31 +482,5 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: '600',
     fontSize: 14,
-  },
-
-  // Navigation
-  bottomNav: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingVertical: 12,
-    backgroundColor: '#fff',
-    borderTopWidth: 1,
-    borderTopColor: '#E5E7EB',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-  },
-  navItem: {
-    alignItems: 'center',
-  },
-  navLabel: {
-    fontSize: 10,
-    color: '#999',
-    marginTop: 4,
-  },
-  navLabelActive: {
-    color: '#0F3C2F',
-    fontWeight: 'bold',
   },
 });

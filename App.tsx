@@ -6,8 +6,10 @@ import ForgotPassword from './Login-Register/Forgetpass';
 import HomeScreen from './Login-Register/Homescreen';
 import BookingFlow from './Login-Register/Bookingflow';
 import Appointment from './Login-Register/Appointment';
+import RateUsScreen from './Login-Register/RateUs';
 import NewsScreen from './Login-Register/Newscreen';
 import Profile from './Login-Register/Profile';
+
 
 export type RootStackParamList = {
   Login: undefined;
@@ -18,6 +20,7 @@ export type RootStackParamList = {
   Appointment: undefined;
   Newscreen: undefined;
   Profile: undefined;
+  RateUs: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -34,6 +37,7 @@ export default function App() {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Booking" component={BookingFlow} />
         <Stack.Screen name="Appointment" component={Appointment} />
+        <Stack.Screen name="RateUs" component={RateUsScreen} />
         <Stack.Screen name="Newscreen" component={NewsScreen} />
         <Stack.Screen name="Profile" component={Profile} />
       </Stack.Navigator>
