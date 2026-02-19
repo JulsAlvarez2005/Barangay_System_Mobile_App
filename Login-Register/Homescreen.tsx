@@ -1,4 +1,7 @@
 import React from 'react';
+import * as FileSystem from 'expo-file-system';
+import * as Sharing from 'expo-sharing';
+import { Asset } from 'expo-asset';
 import { 
   StyleSheet, 
   Text, 
@@ -6,7 +9,9 @@ import {
   SafeAreaView, 
   ScrollView, 
   TouchableOpacity, 
-  StatusBar 
+  StatusBar,
+  Linking
+
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -24,6 +29,28 @@ interface NavIconProps {
 
 
 const ResidentDashboard: React.FC<Props> = ({ navigation }) => {
+  const handleOpenPDF = async () => {
+  try {
+    const pdfAsset = await Asset.loadAsync(require('./barangay-bayabas-citizenz-charter.pdf'));
+    const localUri = pdfAsset[0].localUri;
+    
+    if (!localUri) {
+      console.log("Could not load the PDF file.");
+      return;
+    }
+    const canShare = await Sharing.isAvailableAsync();
+    if (canShare) {
+      await Sharing.shareAsync(localUri, {
+        mimeType: 'application/pdf',
+        dialogTitle: 'View and Download Citizen Charter', 
+      });
+    } else {
+      console.log("Sharing/Viewing is not available on this device");
+    }
+  } catch (error) {
+    console.error("Error opening PDF:", error);
+  }
+};
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#0F3C2F" />
@@ -69,6 +96,23 @@ const ResidentDashboard: React.FC<Props> = ({ navigation }) => {
             <Text style={styles.myRequestsText}>My Requests</Text>
           </TouchableOpacity>
         </View>
+
+        {/* Citizen's Charter Card */}
+        <Text style={styles.sectionTitle}>Citizen's Charter</Text>
+        <TouchableOpacity style={styles.card} activeOpacity={0.7} onPress={handleOpenPDF}>
+          <View style={styles.cardIconContainer}>
+            <View style={styles.charterIconBox}>
+              <Ionicons name="person-outline" size={18} color="#333" />
+              <View style={styles.charterIconLine} />
+            </View>
+          </View>
+          <View style={styles.cardTextContainer}>
+            <Text style={styles.cardTitle}>Download PDF</Text>
+            <Text style={styles.linkText}>
+              barangay-bayabas-citizenz-charter.pdf
+            </Text>
+          </View>
+        </TouchableOpacity>
 
         {/* Available Services */}
         <Text style={styles.sectionTitle}>Available Services</Text>
@@ -130,7 +174,6 @@ const ResidentDashboard: React.FC<Props> = ({ navigation }) => {
     </SafeAreaView>
   );
 }
-
 
 const NavIcon: React.FC<NavIconProps> = ({ name, label, active = false, onPress }) => (
   <TouchableOpacity style={styles.navItem} activeOpacity={0.7} onPress={onPress}>
@@ -260,6 +303,28 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 
+  charterIconBox: {
+    width: 32,
+    height: 42,
+    borderWidth: 1.5,
+    borderColor: '#333',
+    borderRadius: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 2,
+  },
+  charterIconLine: {
+    width: 14,
+    height: 1.5,
+    backgroundColor: '#333',
+    marginTop: 2,
+  },
+  linkText: {
+    fontSize: 13,
+    color: '#0266B3', 
+    marginTop: 4,
+  },
+  
   card: {
     backgroundColor: '#fff',
     borderRadius: 12,
